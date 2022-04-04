@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default function admin() {
+export default function Admin() {
   return (
-    <div>admin</div>
+    <div>A</div>
   )
 }

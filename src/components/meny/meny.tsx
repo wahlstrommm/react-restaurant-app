@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function meny() {
+export default function Meny() {
   return (
     <div>meny</div>
   )

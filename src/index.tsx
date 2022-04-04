@@ -3,13 +3,24 @@ import ReactDOMClient from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Notfound from './components/notfound/notfound';
+import Admin from './components/admin/admin';
+import Bookning from './components/bookning/bookning';
 
 const container =   document.getElementById('root');
 const root = ReactDOMClient.createRoot(container as Element);
 
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+    <Routes>
+      <Route path='/' element={<App/>}/>
+      <Route path='/admin' element={<Admin/>}/>
+      <Route path='/bookning' element={<Bookning/>}/>
+      <Route path='*' element={<Notfound/>}/>
+    </Routes>
+    </BrowserRouter>
   </React.StrictMode>,
 );
 

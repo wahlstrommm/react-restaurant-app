@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default function bookning() {
+export default function Bookning() {
   return (
-    <div>bookning</div>
+    <div>B</div>
   )
 }

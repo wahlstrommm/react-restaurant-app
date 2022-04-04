@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function notfound() {
+export default function Notfound() {
   return (
     <div>notfound</div>
   )
