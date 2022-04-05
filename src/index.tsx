@@ -4,9 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Notfound from './components/notfound/notfound';
-import Admin from './components/admin/admin';
-import Bookning from './components/bookning/bookning';
+import Admin from './components/admin/Admin';
+import Bookning from './components/bookning/Bookning';
+import Notfound from './components/notfound/Notfound';
 
 const container =   document.getElementById('root');
 const root = ReactDOMClient.createRoot(container as Element);

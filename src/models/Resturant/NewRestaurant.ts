@@ -1,9 +1,6 @@
-import { IAdress } from "../IAdress";
+import { Adress } from "../Location/Adress";
 
 export class INewRestaurant{
     name:string="Zias"
-    adress:IAdress
- constructor(adress:IAdress){
-     this.adress=adress;
+    adress =new Adress("Sveavägen 22","111 57","Stockholm")
  }
-}
