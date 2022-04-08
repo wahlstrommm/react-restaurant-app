@@ -1,7 +1,12 @@
-import React from 'react'
+import axios from "axios"
+
+axios.get('https://school-restaurant-api.azurewebsites.net/booking/restaurant/6250058ce031ed74470f57d2')
+
 
 export default function Admin() {
   return (
-    <div>A</div>
+    <div>
+
+    </div>
   )
 }
