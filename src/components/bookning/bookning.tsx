@@ -16,7 +16,7 @@ export default function Bookning() {
   // Försökte enbart ha denna state från början, men fick inte till det med forms. Denna är vad som skickas till API:t för att boka bordet.
   // Försökte ha name som customer.name i forms för att hantera det men funkade ej.
   const [newBooking, setNewBooking] = useState<NewBookning>({
-    restaurantId: '624ff079138a40561e115f16',
+    restaurantId: '',
     date: '',
     time: '',
     numberOfGuests: 0,
@@ -43,7 +43,7 @@ export default function Bookning() {
 
   function sendBooking() {
     axios.post(bookingURL, {
-      restaurantId: '',
+      restaurantId: '624ff079138a40561e115f16',
       date: newBooking.date,
       time: newBooking.time,
       numberOfGuests: newBooking.numberOfGuests,
