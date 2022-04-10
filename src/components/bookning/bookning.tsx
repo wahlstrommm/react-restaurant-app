@@ -48,10 +48,10 @@ export default function Bookning() {
       time: newBooking.time,
       numberOfGuests: newBooking.numberOfGuests,
       customer: {
-        name: newBooking.customer.name,
-        lastname: newBooking.customer.lastname,
-        email: newBooking.customer.email,
-        phone: newBooking.customer.phone
+        name: newCustomer.name,
+        lastname: newCustomer.lastname,
+        email: newCustomer.email,
+        phone: newCustomer.phone
       }
     }).then(response => {console.log(response.data)})
     .catch(error => {console.log(error)})
