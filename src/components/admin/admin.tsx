@@ -8,60 +8,75 @@ import {NewBookning } from "../../models/Booking/NewBooking";
 export default function Admin() {
   const [bookingFromAPI,SetBookingFromAPI]= useState<IBooking[]>([]);
   const [toogle, SetToogle] = useState(true);
-
   
-  const getBookningsFromAPI = () =>{
-    axios.get<IBooking[]>('https://school-restaurant-api.azurewebsites.net/booking/restaurant/6250058ce031ed74470f57d2')
-    .then((response)=> {
+  
+  useEffect(() => {
+    console.log("Trying to get data");
+     
+    if (bookingFromAPI.length > 0) return;
+    getFromAPI()
+      
+  });
+
+const getFromAPI = ()=>{
+  axios.get<IBooking[]>('https://school-restaurant-api.azurewebsites.net/booking/restaurant/624ffb0755e34cb62ef983ec')
+  .then((response) => {
+    console.log('Hämtar')
+
       let bookingListFromAPI= response.data.map((bookings:IBooking)=>{
         return new Booking(bookings._id,bookings.customerId,bookings.restaurantId,bookings.time,bookings.numberOfGuests,bookings.date)
-      },[])
-      console.log(bookingListFromAPI)
-      SetBookingFromAPI(bookingListFromAPI)
-      saveLocalStorage(bookingListFromAPI)
-    })
-  }
-  
-  useEffect(()=>{getFromLocalStorage()
-  },[]
+      });
+
+      SetBookingFromAPI(bookingListFromAPI);  
+    }
   );
-  
-  
-  
-  const getFromLocalStorage = ()=>{
-    let bookingsFromLS = localStorage.getItem('restaurant_booking')
-    if(!bookingsFromLS){
-      getBookningsFromAPI()
-    }else{
-      
-        const bookingData = JSON.parse(bookingsFromLS)
+}
 
-        SetBookingFromAPI(bookingData)
+
+  let bookingHtml = bookingFromAPI.map((bookings: IBooking,id:number) => {
+    return (
+      <div key={id}>
+          <p>
+            Gästens unika id: {bookings._id} <br />
+            Gästens datum {bookings.customerId} <br />
+            Gästens tid {bookings.time} <br />
+            Antal gäster {bookings.numberOfGuests} <br />
+          <button onClick={()=>{deletedBooking(bookings._id,id)}}>Radera</button>
+          <button>Flytta</button>          
+          </p>
+      </div>
+    );
+  });
+
+
+
+  useEffect(() => {
+    console.log("Movies changed");
+  }, [bookingFromAPI]);
+
+
+      const deletedBooking=(deletedBookingID:string,index:number)=>{
+       let booking = bookingFromAPI
+       SetBookingFromAPI(booking.splice(index,0)) 
+       axios.delete('https://school-restaurant-api.azurewebsites.net/booking/delete/'+deletedBookingID)
+       .then(response=>( console.log(response)))
+       .then(getFromAPI)
+       .catch(error=>{
+         console.log("Det blev något fel!" + " Statuskod" + error)
+        })
+        console.log(bookingFromAPI)
       }
-      };
 
-      const saveLocalStorage=((dataFromAPI:IBooking[])=>{
-        if(dataFromAPI.length>0){
 
-          localStorage.setItem("restaurant_booking", JSON.stringify(dataFromAPI))
-        }
-      })
-
-      const deletedBooking=(deletedBookingID:string)=>{
-        axios.delete('https://school-restaurant-api.azurewebsites.net/booking/delete/'+deletedBookingID)
-      }
-
-  
-      let bookingURL = "https://school-restaurant-api.azurewebsites.net/booking/create";
+  // Skapar en customer för att sen kunna lägga till i bokning
   const [newCustomer, setNewCustomer] = useState<INewCostumer>({
     name: '',
     lastname: '',
     email: '',
     phone: ''
   });
-
-
-  
+  // Försökte enbart ha denna state från början, men fick inte till det med forms. Denna är vad som skickas till API:t för att boka bordet.
+  // Försökte ha name som customer.name i forms för att hantera det men funkade ej.
   const [newBooking, setNewBooking] = useState<NewBookning>({
     restaurantId: '',
     date: '',
@@ -75,9 +90,23 @@ export default function Admin() {
     }
   });
 
-  const createBooking = ()=>{
-    axios.post(bookingURL, {
-      restaurantId: '6250058ce031ed74470f57d2',
+  const handleBookingChange = (e: ChangeEvent<HTMLInputElement>) => {
+    let name: string = e.target.name;
+    setNewBooking({...newBooking, [name]: e.target.value});
+    console.log(newBooking);
+  };
+
+  const handleCustomerChange = (e: ChangeEvent<HTMLInputElement>) => {
+    let name: string = e.target.name;
+
+    setNewCustomer({...newCustomer, [name]: e.target.value});
+    console.log(newCustomer);
+  };
+
+
+  function createBooking() {
+    axios.post('https://school-restaurant-api.azurewebsites.net/booking/create', {
+      restaurantId: '624ff079138a40561e115f16',
       date: newBooking.date,
       time: newBooking.time,
       numberOfGuests: newBooking.numberOfGuests,
@@ -87,10 +116,10 @@ export default function Admin() {
         email: newCustomer.email,
         phone: newCustomer.phone
       }
-    }).then(response => {console.log(response.data)})
+    }).then(response => {console.log(response.data+"hämtar")})
     .catch(error => {console.log(error)})
-
   }
+
   
 
   
@@ -98,41 +127,30 @@ export default function Admin() {
   return (<div className="App-header">
     <h1>Admin</h1>
     <div className="">
-      {bookingFromAPI.map((bookingAPI,i)=>{
-        return(<div key={i}>
-          <p>
-            Gästens unika id: {bookingAPI._id} <br />
-            Gästens datum {bookingAPI.customerId} <br />
-            Gästens tid {bookingAPI.time} <br />
-            Antal gäster {bookingAPI.numberOfGuests} <br />
-          <button onClick={()=>{deletedBooking(bookingAPI._id)}}>Radera</button>
-          <button>Flytta</button>
-          <div >
-          
-          </div>
-          </p>
-        </div>)
-      })}
+      {bookingHtml}
     </div>
     <button onClick={()=>SetToogle(!toogle)}>Skapa bokning!</button>
     <div className="toogleContainer" hidden={toogle}>
-    <div className="formContainer" >
+    <div className="formContainer">
     <form>
         <label>Förnamn: </label>
-        <input type="text" name="name" size={30}/> <br />
+        <input type="text" name="name" size={29}  value={newCustomer.name} onChange={handleCustomerChange}/> <br />
         <label>Efternamn: </label>
-        <input type="text" name="lastname" size={28}/><br />
+        <input type="text" name="lastname" size={28} value={newCustomer.lastname} onChange={handleCustomerChange}/><br />
         <label>Email: </label>
-        <input type="text" name="email" size={34} /><br />
+        <input type="text" name="email" size={34} value={newCustomer.email} onChange={handleCustomerChange}/><br />
         <label>Telefonnummer: </label>
-        <input type="text" name="phone" size={20}/><br />
+        <input type="text" name="phone" size={20} value={newCustomer.phone} onChange={handleCustomerChange}/><br />
         <label>Datum: </label>
-        <input type="date" name="date"/><br />
-        <label>Tid: </label>
-        <input type="time" name="time" min="18:00" max={20}/><br />
+        <input type="date" name="date" value={newBooking.date} onChange={handleBookingChange}/><br />
         <label>Antal gäster: </label>
-        <input type="number" name="numberOfGuests"/><br /><br />
+        <input type="number" name="numberOfGuests" min={0} onChange={handleBookingChange}/><br />
       </form>
+        <label>Tid: </label>
+      <select name="time-select" id="timeSelect">
+        <option value="18:00">18:00</option>
+        <option value="21:00">21:00</option>
+      </select>
       <div className="btnContainer">
       <button onClick={()=>(createBooking)}>Skicka bokning</button>
       </div>
