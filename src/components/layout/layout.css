@@ -1,3 +1,8 @@
+header {
+    position: relative;
+    z-index: 1;
+}
+
 .header-logo {
     color: white;
     text-align: center;

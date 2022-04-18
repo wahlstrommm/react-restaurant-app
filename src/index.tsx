@@ -9,6 +9,8 @@ import Bookning from "./components/bookning/bookning";
 import Notfound from "./components/notfound/notfound";
 import Layout from "./components/layout/layout";
 import Home from "./components/home/home";
+import Menu from "./components/menu/menu";
+import Navbar from "./components/navbar/navbar";
 
 const container = document.getElementById("root");
 const root = ReactDOMClient.createRoot(container as Element);
@@ -19,6 +21,8 @@ root.render(
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="/navbar" element={<Navbar />} />
+          <Route path="/menu" element={<Menu />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/bookning" element={<Bookning />} />
           <Route path="*" element={<Notfound />} />

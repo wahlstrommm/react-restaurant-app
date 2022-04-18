@@ -13,7 +13,9 @@ export default function Layout() {
         </div>
         {/* <!------ Menu Button End ------> */}
       </header>
-      <Outlet></Outlet>
+      <main>
+        <Outlet></Outlet>
+      </main>
     </>
   );
 }
