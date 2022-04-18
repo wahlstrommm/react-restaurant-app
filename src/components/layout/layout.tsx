@@ -7,6 +7,11 @@ export default function Layout() {
     <>
       <header>
         <h1 className="header-logo">Zias</h1>
+        {/* <!-------- Menu Button --------> */}
+        <div className="hamburger">
+          <div></div>
+        </div>
+        {/* <!------ Menu Button End ------> */}
       </header>
       <Outlet></Outlet>
     </>
