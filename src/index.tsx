@@ -17,11 +17,12 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />} />
-        <Route index element={<Home />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/bookning" element={<Bookning />} />
-        <Route path="*" element={<Notfound />} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/bookning" element={<Bookning />} />
+          <Route path="*" element={<Notfound />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
