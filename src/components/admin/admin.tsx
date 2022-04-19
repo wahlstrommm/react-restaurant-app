@@ -1,7 +1,7 @@
 import axios from "axios"
 import { ChangeEvent, useEffect, useState } from "react";
 import { Booking } from "../../models/Booking/Bookning";
-import { IBooking } from "../../models/Booking/IBooking";
+import { IBooking } from "../../models/Booking/IBookning";
 import {INewCostumer } from "../../models/Costumer/INewCostumer";
 import {NewBookning } from "../../models/Booking/NewBookning";
 
@@ -147,6 +147,7 @@ const updateBooking = (bookingID:string)=>{
     );
   });
 
+console.log('test')
 console.log('test')
 
   useEffect(() => {
