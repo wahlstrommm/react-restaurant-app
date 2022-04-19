@@ -1,0 +1,18 @@
+form {
+    display: block;
+    margin: 2rem auto;
+    width: 10%;
+    input {
+        border: 1px solid black;
+        display: block;
+    }
+
+    select {
+        border: 1px solid black;
+        display: block;
+    }
+
+    button {
+        border: 1px solid black;
+    }
+}
