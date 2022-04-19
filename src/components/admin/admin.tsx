@@ -1,9 +1,9 @@
 import axios from "axios"
 import { ChangeEvent, useEffect, useState } from "react";
-import { Booking } from "../../models/Booking/Booking";
+import { Booking } from "../../models/Booking/Bookning";
 import { IBooking } from "../../models/Booking/IBooking";
 import {INewCostumer } from "../../models/Costumer/INewCostumer";
-import {NewBookning } from "../../models/Booking/NewBooking";
+import {NewBookning } from "../../models/Booking/NewBookning";
 
 export default function Admin() {
   const [bookingFromAPI,SetBookingFromAPI]= useState<IBooking[]>([]);
@@ -147,7 +147,7 @@ const updateBooking = (bookingID:string)=>{
     );
   });
 
-
+console.log('test')
 
   useEffect(() => {
     console.log("booking changed");
