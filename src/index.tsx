@@ -5,8 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Admin from './components/admin/admin';
-import Bookning from './components/bookning/bookning';
-import Notfound from './components/notfound/notfound';
+import Bookning from './components/bookning/Bookning';
+import Notfound from './components/notfound/Notfound';
 
 const container =   document.getElementById('root');
 const root = ReactDOMClient.createRoot(container as Element);
