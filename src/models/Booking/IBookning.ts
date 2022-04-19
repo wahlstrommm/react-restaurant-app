@@ -4,5 +4,5 @@ export interface IBooking{
         restaurantId:string;
         time:string;
         numberOfGuests:number;
-        customerId:string;
+        customerId:string; 
 }

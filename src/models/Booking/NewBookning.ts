@@ -11,6 +11,6 @@ constructor(restaurantId:string,date:string,time:string,numberOfGuests:number, c
     this.date=date,
     this.time=time,
     this.numberOfGuests=numberOfGuests;
-    this.customer=customer;
+    this.customer=customer; 
     }
 }

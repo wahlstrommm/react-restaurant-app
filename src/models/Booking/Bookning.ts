@@ -5,7 +5,7 @@ export class Booking{
         public  restaurantId:string,
         public  time:string,
         public  numberOfGuests:number,
-        public  customerId:string
+        public  customerId:string,
     ){} 
 
 }
