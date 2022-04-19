@@ -1,6 +1,6 @@
 import axios from "axios"
 import { ChangeEvent, useEffect, useState } from "react";
-import { Booking } from "../../models/bookning/Bookning";
+import { Booking } from "../../models/bookning/bookning";
 import { IBooking } from "../../models/bookning/IBookning";
 import {INewCostumer } from "../../models/Costumer/INewCostumer";
 import {NewBookning } from "../../models/bookning/NewBookning";
@@ -11,12 +11,18 @@ export default function Admin() {
   const [toogle, SetToogle] = useState(true); 
   const [choosenDate,SetChoosenDate] = useState('');
   const [choosenTime,SetChoosenTime] = useState('');
-  const [choosenGuests,SetChoosenGuest]=useState(1)
-  const [showFreeTime,SetShowFreeTime]=useState(<div></div>)
-  const [newBookingContainer,SetNewbookingContainer]=useState(<div></div>)
+  const [choosenGuests,SetChoosenGuest] = useState(1)
+  const [showFreeTime,SetShowFreeTime] = useState(<div></div>)
+  const [newBookingContainer,SetNewbookingContainer] = useState(<div></div>)
   const [toogleNewContainer,SetToogleNewContainer] = useState(true)
-  const [toogleOverlay,SetToogleOverlay] = useState(true)
   const [updateBookingContainer,SetUpdateBookingContainer] = useState(true)
+  const [bookingIDForUpdate,SetBookingIDForUpdate] =useState('')
+  const[bookingForDate,SetBookingForDate] =useState('')
+  const[bookingForTime,SetBookingForTime] =useState('')
+  const[bookingNumberOfGuestUpdate,SetBookingNumberOfGuestUpdate] =useState(0)
+  const [bookingUpdateInfo,SetBookingUpdateInfo]=useState(<div></div>)
+
+
   const [newCustomer, setNewCustomer] = useState<INewCostumer>({
     name: '',
     lastname: '',
@@ -120,15 +126,40 @@ const getFromAPI = ()=>{
     }
   );
 }
-let test;
-const updateBooking = (bookingID:string)=>{
-  SetUpdateBookingContainer(!updateBookingContainer)
-  test=<div className="newbookingContainer">
-    <h2>hej</h2>
-  </div>
-  SetToogleOverlay(!toogleOverlay)
+
+const updateBooking = (bookingID:string,bookingDate:string,bookingTime:string,bookingNumberOfGuest:number)=>{
+ SetUpdateBookingContainer(!updateBookingContainer)
+ SetBookingIDForUpdate(bookingID);
+ SetBookingForDate(bookingDate);
+ SetBookingForTime(bookingTime);
+ SetBookingNumberOfGuestUpdate(bookingNumberOfGuest)
+  console.log('Hej från is', bookingTime)
+
+  SetBookingUpdateInfo(<div>
+    <p>Gällande ID: {bookingIDForUpdate}</p>
+    <p>Skriv önskade ändring!</p>
+        <p>tid:</p>
+          <select name="time-select" id="timeSelect" required value={bookingTime}  onChange={(e)=>{handleBookingTime(e.target.value)}}>
+            <option value="18:00">18:00</option>
+            <option value="21:00">21:00</option>
+          </select> <br />
+        <p> Antal gäster:    </p>
+          <select name="guestAmount" id="guestForm" required value={bookingNumberOfGuest} onChange={(e)=>{handleBookingInfoGuest(parseInt(e.target.value))}}>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>  
+              <option value="6">6</option>
+          </select> <br />
+        <p>Datum: </p>
+        <input type="date" min="2022-04-01" value={bookingDate} required onChange={(e)=>{handleBookingDate(e.target.value)}}/>
+
+  </div>)
+ 
+ 
  let restaurantId='';
-  console.log(bookingID)
+  console.log(bookingID,bookingDate,bookingTime,bookingNumberOfGuest)
   // axios.post('https://school-restaurant-api.azurewebsites.net/booking/update/'+bookingID)
 }
 
@@ -141,7 +172,7 @@ const updateBooking = (bookingID:string)=>{
             Gästens tid: {bookings.time} <br />
             Antal gäster: {bookings.numberOfGuests} <br />
           <button onClick={()=>{deletedBooking(bookings._id,id)}}>Radera</button>
-          <button onClick={()=>{updateBooking(bookings._id)}}>Flytta</button> 
+          <button onClick={()=>{updateBooking(bookings._id,bookings.date,bookings.time,bookings.numberOfGuests)}}>Flytta</button> 
           </p>
       </div>
     );
@@ -178,9 +209,7 @@ console.log('test')
     costumer.email=newCustomer.email
     costumer.phone=newCustomer.phone
     newBooking.customer=costumer
-    // console.log("name:",costumer.name,"lastname:",costumer.lastname,"email:",costumer.email,"phone:",costumer.phone)
-    // console.log(newBooking.customer)
-    // console.log(newBooking)
+
     axios.post('https://school-restaurant-api.azurewebsites.net/booking/create', {
       "restaurantId": '624ffb0755e34cb62ef983ec',
       "date": newBooking.date,
@@ -205,18 +234,13 @@ console.log('test')
     for (let i = 0; i < 7; i++) {  
      let date = new Date(today.getFullYear(), today.getMonth(), today.getDate()+i+1).toISOString().split('T')[0];
      listOfDate.push(date)
-    //  dag.push(date)
     }
-    bookingInfoHTML(inputDateFromUser,inputTimeFromUser,inputGuestFromUser,listOfDate,listOfTime)
-    // availableBooking(listOfDate,listOfTime)
-    
+    bookingInfoHTML(inputDateFromUser,inputTimeFromUser,inputGuestFromUser,listOfDate,listOfTime)    
     }else
     return SetShowFreeTime(<div><p>Du valde ingen tid! Välj tid och försök igen!</p></div>)
   }
 
-// let dag:string[]=[]
-// let forstaSittning:string[]=[]
-// let andraSittning:string[]=[]
+
 
 useEffect(() => {
   console.log("booking changed");
@@ -233,11 +257,6 @@ const bookingInfoHTML=(chooseDate:string,choosenTime:string,choosenGuests:number
     if (chooseDate === bookingFromAPI[i].date){
            for (let i = 0; i < bookingFromAPI.length; i++) {
              if(choosenTime === bookingFromAPI[i].time&&bookingFromAPI.length<15){
-              // console.log(bookingFromAPI[i].time )
-              // console.log("det finns 2",bookingFromAPI[i].date[i])
-              // console.log("det finns bord att boka",bookingFromAPI[i].time )
-              // console.log("det finns bord att boka",bookingFromAPI[i].time)
-              // console.log("det finns bord att boka",bookingFromAPI.length )
                 SetToogleNewContainer(true)
               return SetShowFreeTime(<div> 
                 <p>Det finns ett ledigt bord att boka gällande datumet: {chooseDate} och tiden: {choosenTime}</p>
@@ -246,12 +265,6 @@ const bookingInfoHTML=(chooseDate:string,choosenTime:string,choosenGuests:number
                 </div>)
             }   
             else if(choosenTime === bookingFromAPI[i].time&&bookingFromAPI.length>=15){
-              // console.log("det finns inga bord att boka",bookingFromAPI[i].time.length>15 )
-              // console.log("det finns ",bookingFromAPI[i].date[i])
-              // console.log("det finns ",bookingFromAPI[i].date)
-              // console.log(choosenTime, bookingFromAPI[i],bookingFromAPI[i].time.length,15,chooseDate,bookingFromAPI[i].date)
-              // console.log("det finns bord att boka",bookingFromAPI.length )
-              // console.log('över eller lika med')
               SetToogleNewContainer(true)
               SetShowFreeTime(<div> 
                 <p>Det finns inget bord zzzz att boka gällande datumet: {chooseDate} och tiden: {choosenTime}. <br />
@@ -291,7 +304,7 @@ const bookingInfoHTML=(chooseDate:string,choosenTime:string,choosenGuests:number
     <div>
       {bookingHtml}
     <div className="updateContainer" hidden={updateBookingContainer}>
-        <h1></h1>
+          {bookingUpdateInfo}
       </div>  
     </div>
     <button onClick={()=>SetToogle(!toogle)}>Skapa bokning!</button>
