@@ -1,0 +1,35 @@
+h2, h3, p {
+    font-family: "Poppins", sans-serif;
+    color: #3C3C3C;
+}
+
+.image-container {
+    background-image: url("../../assets/glas.svg");
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0;
+}
+
+.about-zias {
+    text-align: center;
+    position: relative;
+    height: 20%;
+    max-width: 40%;
+    left: 30%;
+}
+
+.span-line {
+    position: relative;
+    display: block;
+    border-top: 4px solid #E2A749;
+    width: 30%;
+    left: 35%;
+}
+
+.flexbox-container {
+    background-color: #F3F3F3;
+    display: flex;
+    justify-content: center;
+}

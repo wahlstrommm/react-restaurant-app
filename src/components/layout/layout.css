@@ -1,4 +1,5 @@
-header {
+.header {
+    background-color: #251c0e;
     position: relative;
     z-index: 1;
 }
