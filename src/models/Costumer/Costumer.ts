@@ -9,6 +9,5 @@ export class Costumer{
         this.name=costumerName,
         this.lastname=costumerLastName,
         this.email=costumerEmail,
-        this.phone=costumerPhone
-    }
+        this.phone=costumerPhone}
 }

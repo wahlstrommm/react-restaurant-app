@@ -1,0 +1,48 @@
+.header {
+    background-color: #251c0e;
+    position: relative;
+    z-index: 1;
+}
+
+.header-logo {
+    color: white;
+    text-align: center;
+    font-family: 'WindSong', cursive;
+    font-weight: normal;
+    font-size: 3em;
+    margin: 0;
+}
+
+/* Hamburger Menu button
+--------------------------*/
+.hamburger {
+    margin: 1em;
+    width: 40px;
+    position: fixed;
+    z-index: 200;
+    top: 0;
+    right: 0;
+}
+.hamburger div {
+    background-color: white;
+    border-radius: 3px;
+    content: '';
+    display: block;
+    height: 5px;
+    margin: 7px 0px 7px 15px;
+    transition: all .2s ease-in-out;
+    width: 25px;
+}
+.hamburger:before {
+    background-color: white;
+    border-radius: 3px;
+    content: '';
+    display: block;
+    height: 5px;
+    margin: 7px 0px 7px 4px;
+    transition: all .2s ease-in-out;
+}
+
+.hamburger div:hover {
+    margin: 7px 11px 7px 4px;
+}
