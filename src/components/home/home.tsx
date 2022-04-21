@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../../styled components/Button";
 import Bookning from "../bookning/bookning";
 // import drinkPic from "../../assets/glas.svg";
 // import { Img } from "../../styled components/Img";
@@ -12,26 +13,29 @@ export default function Home() {
     <div>
       <div className="image-container"></div>
       <div className="about-zias">
-        <h2>Restaurangen</h2>
-        <p>
-          Hos oss på Restaurang Zias får ni möjlighet att avnjuta karibiska och
-          kubanska maträtter tillagade med utsökta och annorlunda råvaror.
-          Fantastiska drinkar och ett bra utbud på öl och rom.
-        </p>
-        <span className="span-line"></span>
+        <div className="about-content">
+          <h2>Restaurangen</h2>
+          <p>
+            Hos oss på Restaurang Zias får ni möjlighet att avnjuta karibiska
+            och kubanska maträtter tillagade med utsökta och annorlunda råvaror.
+            Fantastiska drinkar och ett bra utbud på öl och rom.
+          </p>
+          <span className="span-line"></span>
+        </div>
       </div>
       <div className="flexbox-container">
         <div className="booking-info">
           <h3>Boka bord</h3>
           <p>
-            På webben eller via telefon <br /> 018 - 71 40 40
+            På webben eller via telefon <br />{" "}
+            <i className="fa-solid fa-phone"></i> 018 - 71 40 40
           </p>
-          <button
+          <Button
             onClick={() => {
               navigate("/bookning");
             }}>
             Boka här!
-          </button>
+          </Button>
         </div>
         <div className="opening-hours">
           <table>

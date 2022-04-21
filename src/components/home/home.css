@@ -16,8 +16,18 @@ h2, h3, p {
     text-align: center;
     position: relative;
     height: 20%;
-    max-width: 40%;
-    left: 30%;
+    max-width: 100%;
+    background-color: #0e0a07;
+    padding: 20px;
+}
+
+.about-zias h2 {
+    text-transform: uppercase;
+    color: white;
+}
+
+.about-zias p {
+    color: white;
 }
 
 .span-line {
@@ -26,10 +36,56 @@ h2, h3, p {
     border-top: 4px solid #E2A749;
     width: 30%;
     left: 35%;
+    margin: 20px 0px;
+}
+.booking-info{
+    text-align: center;
+    position: relative;
+    height: 20%;
+    max-width: 100%;
+    padding: 20px;
+}
+.fa-phone {
+    color: #E2A749;
+}
+.opening-hours {
+    position: relative;
+    height: 20%;
+    max-width: 100%;
+    padding: 20px;
+    background-color: #F3F3F3;
+}
+table {
+    margin: 0;
+    position: relative;
+    height: 20%;
+    width: 50%;
+    left: 25%;
+    font-family: "Poppins", sans-serif;
+    font-weight: 200;
+}
+.opening-day {
+    padding: 2px 8px;
+}
+.opening-hour {
+    padding: 2px 8px;
+    font-weight: 500;
 }
 
-.flexbox-container {
-    background-color: #F3F3F3;
-    display: flex;
-    justify-content: center;
+@media screen and (min-width: 481px) {
+   
+    .about-content {
+        position: relative;
+        max-width: 40%;
+        left: 30%;
+    }
+    .flexbox-container {
+        background-color: #F3F3F3;
+        display: flex;
+        justify-content: center;
+    }
+    table {
+        left: 0;
+        padding: 15px;
+    }
 }

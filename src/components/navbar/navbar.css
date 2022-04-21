@@ -1,13 +1,18 @@
 .navbar {
     position: relative;
-    width: 20%;
+    height: 100%;
+    width: 100%;
     top: 50px;
-    left: 40%;
     text-align: center;
-
 }
 
-a {
-    text-decoration: none;
-    color: #3C3C3C;
+.navbar ul {
+    padding: 0;
+}
+
+@media screen and (min-width: 481px) {
+
+    .navbar {
+        top: 30px;
+    }    
 }
