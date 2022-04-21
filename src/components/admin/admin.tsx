@@ -1,7 +1,8 @@
-import axios from "axios"
+import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Booking } from "../../models/bookning/bookning";
 import { IBooking } from "../../models/bookning/IBookning";
+
 import {INewCostumer } from "../../models/Costumer/INewCostumer";
 import {NewBookning } from "../../models/bookning/NewBookning";
 import { Costumer } from "../../models/Costumer/Costumer";
@@ -27,10 +28,10 @@ export default function Admin() {
   const [bookingUpdateInfo,SetBookingUpdateInfo]=useState(<div></div>)
   const [toogleGDPR,SetToogleGDPR] = useState(true)
   const [newCustomer, setNewCustomer] = useState<INewCostumer>({
-    name: '',
-    lastname: '',
-    email: '',
-    phone: ''
+    name: "",
+    lastname: "",
+    email: "",
+    phone: "",
   });
 
     const [newBooking, setNewBooking] = useState<NewBookning>({
@@ -93,15 +94,52 @@ let costumersFull:any[]=[]
       setNewBooking({...newBooking,time:time})
     };
 
+  const handleBookingInfoFName = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log("hej from fname", e);
+    let name = e.target.value;
+    setNewCustomer({ ...newCustomer, name: name });
+  };
 
+  const handleBookingInfoLName = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log("hej from lname", e);
+    let lastname = e.target.value;
+    setNewCustomer({ ...newCustomer, lastname: lastname });
+  };
 
+  const handleBookingInfoEmail = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log("hej from email", e);
+    let email = e.target.value;
+    setNewCustomer({ ...newCustomer, email: email });
+  };
+
+  const handleBookingInfoPhone = (e: ChangeEvent<HTMLInputElement>) => {
+    let phone = e.target.value;
+    console.log("hej from phone", e);
+    setNewCustomer({ ...newCustomer, phone: phone });
+  };
+
+  const handleBookingInfoGuest = (e: number) => {
+    let guests = e;
+    SetChoosenGuest(guests);
+    setNewBooking({ ...newBooking, numberOfGuests: guests });
+  };
+
+  const handleBookingDate = (e: string) => {
+    let name: string = e;
+    SetChoosenDate(name);
+    setNewBooking({ ...newBooking, date: name });
+  };
+
+  const handleBookingTime = (e: string) => {
+    let time: string = e;
+    SetChoosenTime(time);
+    setNewBooking({ ...newBooking, time: time });
+  };
 
   useEffect(() => {
     console.log("Trying to get data");
     if (bookingFromAPI.length > 0) return;
-    if (bookingFromAPI.length = 0) return;
-    getFromAPI()
-      
+
   });
   // useEffect(() => {
   //   console.log("Trying to get costumer DATA");
@@ -109,9 +147,6 @@ let costumersFull:any[]=[]
   //   // getCostumersFromAPI()
       
   // });
-
-
-
 
   const newBookingHTML = ()=>{
     SetShowFreeTime(<></>)
@@ -341,11 +376,9 @@ const sendUpdateBooking=(chooseDate:string,choosenTime:string,numberOfGuests:num
   });
 
 
-
   useEffect(() => {
     console.log("booking changed");
   }, [bookingFromAPI]);
-
 
 
       const deletedBooking=(deletedBookingID:string,index:number)=>{
@@ -431,24 +464,73 @@ const bookingInfoHTML=(chooseDate:string,choosenTime:string,choosenGuests:number
                 <p>Det finns inget bord zzzz att boka gällande datumet: {chooseDate} och tiden: {choosenTime}. <br />
                 Kolla ett annat datum eller avvakta för eventuella avbokningar...
                 </p>
-                </div>)
-            }        
-            else{
-                SetToogleNewContainer(true)
-              SetShowFreeTime(<div> 
-                <p>Det finns ett bord dddddddd att boka gällande datumet: {chooseDate} och tiden: {choosenTime}</p>
-                <button onClick={()=>{newBookingHTML()}}>Boka!</button>
-                </div>)
-            }
-           }
-        }else{
-          SetShowFreeTime(<div> 
-            <p>Det finns ett bord eeeeeeeeeee att boka gällande datumet: {chooseDate} och tiden: {choosenTime}</p>
-            <button onClick={()=>{newBookingHTML()}}>Boka!</button>
+                <button
+                  onClick={() => {
+                    newBookingHTML();
+                  }}>
+                  Boka!
+                </button>
                 <p>Vill du boka det?</p>
-            </div>)
+              </div>
+            );
+          } else if (
+            choosenTime === bookingFromAPI[i].time &&
+            bookingFromAPI.length >= 15
+          ) {
+            // console.log("det finns inga bord att boka",bookingFromAPI[i].time.length>15 )
+            // console.log("det finns ",bookingFromAPI[i].date[i])
+            // console.log("det finns ",bookingFromAPI[i].date)
+            // console.log(choosenTime, bookingFromAPI[i],bookingFromAPI[i].time.length,15,chooseDate,bookingFromAPI[i].date)
+            // console.log("det finns bord att boka",bookingFromAPI.length )
+            // console.log('över eller lika med')
+            SetToogleNewContainer(true);
+            SetShowFreeTime(
+              <div>
+                <p>
+                  Det finns inget bord zzzz att boka gällande datumet:{" "}
+                  {chooseDate} och tiden: {choosenTime}. <br />
+                  Kolla ett annat datum eller avvakta för eventuella
+                  avbokningar...
+                </p>
+              </div>
+            );
+          } else {
+            SetToogleNewContainer(true);
+            SetShowFreeTime(
+              <div>
+                <p>
+                  Det finns ett bord dddddddd att boka gällande datumet:{" "}
+                  {chooseDate} och tiden: {choosenTime}
+                </p>
+                <button
+                  onClick={() => {
+                    newBookingHTML();
+                  }}>
+                  Boka!
+                </button>
+              </div>
+            );
+          }
         }
+      } else {
+        SetShowFreeTime(
+          <div>
+            <p>
+              Det finns ett bord eeeeeeeeeee att boka gällande datumet:{" "}
+              {chooseDate} och tiden: {choosenTime}
+            </p>
+            <button
+              onClick={() => {
+                newBookingHTML();
+              }}>
+              Boka!
+            </button>
+            <p>Vill du boka det?</p>
+          </div>
+        );
+      }
     }
+
     return(((<div>{chooseDate} {choosenTime}
     {showFreeTime}
     </div>))
@@ -509,15 +591,12 @@ const bookingInfoHTML=(chooseDate:string,choosenTime:string,choosenGuests:number
               <label>Telefonnummer: </label>
                   <input type="tel" name="phone" size={20}  value={newCustomer.phone}  onChange={handleBookingInfoPhone}/><br />
               </form>
-           
+
 
                       <button onClick={()=>{createBooking()}}>Skicka bokning</button> 
                 </div>
       <div> 
       </div>
     </div>
-    </div>
-    </div>
-    </div>
-  )
+  );
 }

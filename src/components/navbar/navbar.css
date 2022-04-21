@@ -1,4 +1,18 @@
-a {
-    text-decoration: none;
-    color: black;
+.navbar {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    top: 50px;
+    text-align: center;
+}
+
+.navbar ul {
+    padding: 0;
+}
+
+@media screen and (min-width: 481px) {
+
+    .navbar {
+        top: 30px;
+    }    
 }
