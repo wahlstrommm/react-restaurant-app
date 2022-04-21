@@ -1,22 +1,31 @@
 import axios from "axios"
 import { ChangeEvent, useEffect, useState } from "react";
-import { Booking } from "../../models/bookning/Bookning";
+import { Booking } from "../../models/bookning/bookning";
 import { IBooking } from "../../models/bookning/IBookning";
 import {INewCostumer } from "../../models/Costumer/INewCostumer";
 import {NewBookning } from "../../models/bookning/NewBookning";
+import { Costumer } from "../../models/Costumer/Costumer";
+import { CostumerData } from "../../models/Costumer/CostumerData";
+import { ICostumerData } from "../../models/Costumer/ICostumerData";
 
 export default function Admin() {
   const [bookingFromAPI,SetBookingFromAPI]= useState<IBooking[]>([]);
   const [availableBookings,SetAvailableBookings] = useState<IBooking[]>([]);
+  const [costumersFromAPI,SetCostumersFromAPI] = useState<ICostumerData[]>([]);
   const [toogle, SetToogle] = useState(true); 
-  const [choosenDate,SetChoosenDate] = useState('');
+  const [choosenDate,SetChoosenDate] = useState('2022-04-27');
   const [choosenTime,SetChoosenTime] = useState('');
-  const [choosenGuests,SetChoosenGuest]=useState(1)
-  const [showFreeTime,SetShowFreeTime]=useState(<div></div>)
-  const [newBookingContainer,SetNewbookingContainer]=useState(<div></div>)
+  const [choosenGuests,SetChoosenGuest] = useState(1)
+  const [showFreeTime,SetShowFreeTime] = useState(<div></div>)
+  // const [newBookingContainer,SetNewbookingContainer] = useState(<div></div>)
   const [toogleNewContainer,SetToogleNewContainer] = useState(true)
-  const [toogleOverlay,SetToogleOverlay] = useState(true)
   const [updateBookingContainer,SetUpdateBookingContainer] = useState(true)
+  const [bookingIDForUpdate,SetBookingIDForUpdate] =useState('')
+  const [bookingForDate,SetBookingForDate] =useState('')
+  const [bookingForTime,SetBookingForTime] =useState('')
+  const [bookingNumberOfGuestUpdate,SetBookingNumberOfGuestUpdate] =useState(0)
+  const [bookingUpdateInfo,SetBookingUpdateInfo]=useState(<div></div>)
+  const [toogleGDPR,SetToogleGDPR] = useState(true)
   const [newCustomer, setNewCustomer] = useState<INewCostumer>({
     name: '',
     lastname: '',
@@ -36,6 +45,10 @@ export default function Admin() {
         phone: ''
       }
     });
+
+
+    let costumerIDs:string[]=[]
+let costumersFull:any[]=[]
 
     const handleBookingInfoFName=(e:ChangeEvent<HTMLInputElement>)=>{
       console.log('hej from fname',e)
@@ -86,9 +99,16 @@ export default function Admin() {
   useEffect(() => {
     console.log("Trying to get data");
     if (bookingFromAPI.length > 0) return;
+    if (bookingFromAPI.length = 0) return;
     getFromAPI()
       
   });
+  // useEffect(() => {
+  //   console.log("Trying to get costumer DATA");
+  //   if (costumersFromAPI.length > 0) return;
+  //   // getCostumersFromAPI()
+      
+  // });
 
 
 
@@ -109,46 +129,218 @@ export default function Admin() {
   }
 
 const getFromAPI = ()=>{
+  
   axios.get<IBooking[]>('https://school-restaurant-api.azurewebsites.net/booking/restaurant/624ffb0755e34cb62ef983ec')
   .then((response) => {
-    console.log('Hämtar')
       let bookingListFromAPI= response.data.map((bookings:IBooking)=>{
         return new Booking(bookings._id,bookings.date,bookings.restaurantId,bookings.time,bookings.numberOfGuests,bookings.customerId)
       });
 
-      SetBookingFromAPI(bookingListFromAPI);  
-    }
-  );
+      let listIDs: string [] = [];
+      for (let i = 0; i < bookingListFromAPI.length; i++) {
+        listIDs.push(bookingListFromAPI[i].customerId);
+      }
+
+
+      SetBookingFromAPI(bookingListFromAPI);
+      console.log('hej')
+      getIDs(bookingListFromAPI)
+      return listIDs
+    })
+    .then((customerIdlist) => {
+      console.log(customerIdlist)
+      for (let i = 0; i < customerIdlist.length; i++) {
+        axios.get<ICostumerData[]>('https://school-restaurant-api.azurewebsites.net/customer/'+customerIdlist[i])
+        .then((response) => {
+          console.log('Hämtar Costumer',response.data)
+          let costumersListFromAPI = response.data.map((cosutmers:ICostumerData)=>{
+            return costumersFull.push( new CostumerData(cosutmers._id,cosutmers.name,cosutmers.lastname,cosutmers.email,cosutmers.phone))
+            });
+            console.log(customerIdlist) 
+            console.log(costumersFromAPI) 
+            console.log(response.data)
+            console.log(costumersFull)
+            SetCostumersFromAPI(costumersFull)
+            console.log(costumersListFromAPI)
+
+          }).catch(error=>{
+            console.log("Det blev något fel!" + " Statuskod" + error)
+           })
+        }
+      }).catch(error=>{
+        console.log("Det blev något fel!" + " Statuskod" + error)
+       })
+      }
+//       let mergedArray = [];
+// for (let i = 0, il = bookingFromAPI.length; i < il; i++) {
+//   mergedArray.push(bookingFromAPI[i]);
+//   mergedArray.push(costumersFull[i]);
+//   console.log(mergedArray)
+// }
+  
+// var array1 = [1, 2, 3, 4];
+// var array2 = ["a", "b", "c", "d"];
+
+
+
+
+
+
+const getIDs=(bookingListFromAPI:Booking[])=>{
+  console.log('från ids',typeof bookingListFromAPI)
+  for (let i = 0; i < bookingListFromAPI.length; i++) {
+    costumerIDs.push(bookingListFromAPI[i].customerId)
+    console.log(bookingListFromAPI[i].customerId)
+    let uniqeIDforCostumer = bookingListFromAPI[i].customerId
+    // getCostumersFromAPI(uniqeIDforCostumer)
+  }
 }
-let test;
-const updateBooking = (bookingID:string)=>{
-  SetUpdateBookingContainer(!updateBookingContainer)
-  test=<div className="newbookingContainer">
-    <h2>hej</h2>
-  </div>
-  SetToogleOverlay(!toogleOverlay)
- let restaurantId='';
-  console.log(bookingID)
+
+// for (let i = 0; i < costumersFromAPI.length; i++) {
+//   console.log(costumersFromAPI[i])
+// }
+// const getCostumersFromAPI = (uniqeIDforCostumer:string)=>{
+  
+
+//   axios.get<CostumerData[]>('https://school-restaurant-api.azurewebsites.net/customer/'+uniqeIDforCostumer)
+//   .then((response) => {
+//     console.log('Hämtar Costumer',response.data)
+//     let costumersListFromAPI = response.data.map((cosutmers:CostumerData)=>{
+//       return new CostumerData(cosutmers.id,cosutmers.name,cosutmers.lastname,cosutmers.email,cosutmers.phone)
+//       });
+//       SetCostumersFromAPI(costumersListFromAPI);
+//       costumersFull.push(costumersListFromAPI) 
+//       console.log(costumersListFromAPI) 
+//       console.log(response.data)
+//       console.log(costumersFull)
+//       console.log(costumersListFromAPI)
+//     })
+//   }
+//   const render =()=>{
+// console.log(costumersFull.length)
+//     costumersFull.map((costumers: CostumerData,id:number) => {
+//       return ((<div key={id}>
+//             <p>
+//               Gästens bookings id: {costumers.email} <br />
+//               Gästens datum: {costumers.lastname} <br />
+//               Gästens tid: {costumers.name} <br />
+//               Gäst id:     {costumers.phone}<br />
+//               Antal gäster: {costumers.email} <br />
+//             </p>
+//         </div>)
+//       );
+//     });
+//   }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // render()
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  
+  const updateBooking = (bookingID:string,bookingDate:string,bookingTime:string,bookingNumberOfGuest:number,costumerID:string,restaurantId:string)=>{
+ SetUpdateBookingContainer(!updateBookingContainer)
+ console.log(costumersFromAPI)
+
+ SetBookingIDForUpdate(bookingID);
+ SetBookingForDate(bookingDate);
+ SetBookingForTime(bookingTime);
+ SetBookingNumberOfGuestUpdate(bookingNumberOfGuest)
+  console.log('id kund', costumerID)
+  console.log('gäster', bookingNumberOfGuest)
+  console.log('tid', bookingForTime)
+  console.log('datum', bookingDate)
+  console.log('resturangid', restaurantId)
+
+  SetBookingUpdateInfo(<div>
+    <p>Gällande ID: {bookingIDForUpdate}</p>
+    <p>Skriv önskade ändring!</p>
+        <p>tid:</p>
+          <select name="time-select" id="timeSelect" required value={bookingTime}  onChange={(e)=>{handleBookingTime(e.target.value)}}>
+            <option value="18:00">18:00</option>
+            <option value="21:00">21:00</option>
+          </select> <br />
+        <p> Antal gäster:    </p>
+          <select name="guestAmount" id="guestForm" required value={bookingNumberOfGuest} onChange={(e)=>{handleBookingInfoGuest(parseInt(e.target.value))}}>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>  
+              <option value="6">6</option>
+          </select> <br />
+        <p>Datum: </p>
+        <input type="date" min="2022-04-01" value={bookingDate} required onChange={(e)=>{handleBookingDate(e.target.value)}}/>
+        <button onClick={()=>{sendUpdateBooking(bookingDate,bookingTime,bookingNumberOfGuest)}}>Sök!</button>
+  </div>)
+ 
+ 
+//  let restaurantId='';
+  console.log(bookingID,bookingDate,bookingTime,bookingNumberOfGuest)
   // axios.post('https://school-restaurant-api.azurewebsites.net/booking/update/'+bookingID)
 }
 
+const sendUpdateBooking=(chooseDate:string,choosenTime:string,numberOfGuests:number)=>{
+  for (let i = 0; i < bookingFromAPI.length; i++) {
+  // console.log(bookingFromAPI[i].date)
+  if (chooseDate === bookingFromAPI[i].date){}
+         for (let i = 0; i < bookingFromAPI.length; i++) {}
+           if(choosenTime === bookingFromAPI[i].time&&bookingFromAPI.length<15){}
+          }}
+
+
+
 
   let bookingHtml = bookingFromAPI.map((bookings: IBooking,id:number) => {
+    console.log('Kör mapping')
+    console.log(costumersFull)
+    console.log(costumersFromAPI)
+    let costumerInfo = costumersFromAPI.filter((customerInfo) => {
+      if (customerInfo._id === bookings._id){
+
+        console.log('från info')
+          return true;
+      }
+    })
+
+    console.log(costumerInfo)
     return (<div key={id}>
           <p>
-            Gästens unika id: {bookings._id} <br />
+            Gästens bookings id: {bookings._id} <br />
             Gästens datum: {bookings.date} <br />
             Gästens tid: {bookings.time} <br />
+            Gäst id:     {bookings.customerId}<br />
             Antal gäster: {bookings.numberOfGuests} <br />
           <button onClick={()=>{deletedBooking(bookings._id,id)}}>Radera</button>
-          <button onClick={()=>{updateBooking(bookings._id)}}>Flytta</button> 
+          <button onClick={()=>{updateBooking(bookings._id,bookings.date,bookings.time,bookings.numberOfGuests,bookings.customerId,bookings.restaurantId)}}>Flytta</button> 
           </p>
       </div>
     );
   });
 
-console.log('test')
-console.log('test')
+
+  let bookingHtml2 = costumersFromAPI.map((reddd: ICostumerData,id:number) => {
+    console.log('Kör mapping')
+    console.log(costumersFull)
+    console.log(costumersFromAPI)
+
+    return (<div key={id}>
+          <p>
+            Gästens dssdds id: {reddd._id} <br />
+            Gästens dssdsdsd: {reddd.lastname} <br />
+            Gästens dssdds: {reddd.email} <br />
+            Gäst dssdsdsd:     {reddd.name}<br />
+            Antal gäster: {reddd.phone}
+          <br />
+          {/* <button onClick={()=>{deletedBooking(bookings._id,id)}}>Radera</button> */}
+          {/* <button onClick={()=>{updateBooking(bookings._id,bookings.date,bookings.time,bookings.numberOfGuests,bookings.customerId,bookings.restaurantId)}}>Flytta</button>  */}
+          </p>
+      </div>
+    );
+  });
+
+
 
   useEffect(() => {
     console.log("booking changed");
@@ -178,9 +370,7 @@ console.log('test')
     costumer.email=newCustomer.email
     costumer.phone=newCustomer.phone
     newBooking.customer=costumer
-    // console.log("name:",costumer.name,"lastname:",costumer.lastname,"email:",costumer.email,"phone:",costumer.phone)
-    // console.log(newBooking.customer)
-    // console.log(newBooking)
+
     axios.post('https://school-restaurant-api.azurewebsites.net/booking/create', {
       "restaurantId": '624ffb0755e34cb62ef983ec',
       "date": newBooking.date,
@@ -205,18 +395,13 @@ console.log('test')
     for (let i = 0; i < 7; i++) {  
      let date = new Date(today.getFullYear(), today.getMonth(), today.getDate()+i+1).toISOString().split('T')[0];
      listOfDate.push(date)
-    //  dag.push(date)
     }
-    bookingInfoHTML(inputDateFromUser,inputTimeFromUser,inputGuestFromUser,listOfDate,listOfTime)
-    // availableBooking(listOfDate,listOfTime)
-    
+    bookingInfoHTML(inputDateFromUser,inputTimeFromUser,inputGuestFromUser,listOfDate,listOfTime)    
     }else
     return SetShowFreeTime(<div><p>Du valde ingen tid! Välj tid och försök igen!</p></div>)
   }
 
-// let dag:string[]=[]
-// let forstaSittning:string[]=[]
-// let andraSittning:string[]=[]
+
 
 useEffect(() => {
   console.log("booking changed");
@@ -233,11 +418,6 @@ const bookingInfoHTML=(chooseDate:string,choosenTime:string,choosenGuests:number
     if (chooseDate === bookingFromAPI[i].date){
            for (let i = 0; i < bookingFromAPI.length; i++) {
              if(choosenTime === bookingFromAPI[i].time&&bookingFromAPI.length<15){
-              // console.log(bookingFromAPI[i].time )
-              // console.log("det finns 2",bookingFromAPI[i].date[i])
-              // console.log("det finns bord att boka",bookingFromAPI[i].time )
-              // console.log("det finns bord att boka",bookingFromAPI[i].time)
-              // console.log("det finns bord att boka",bookingFromAPI.length )
                 SetToogleNewContainer(true)
               return SetShowFreeTime(<div> 
                 <p>Det finns ett ledigt bord att boka gällande datumet: {chooseDate} och tiden: {choosenTime}</p>
@@ -246,12 +426,6 @@ const bookingInfoHTML=(chooseDate:string,choosenTime:string,choosenGuests:number
                 </div>)
             }   
             else if(choosenTime === bookingFromAPI[i].time&&bookingFromAPI.length>=15){
-              // console.log("det finns inga bord att boka",bookingFromAPI[i].time.length>15 )
-              // console.log("det finns ",bookingFromAPI[i].date[i])
-              // console.log("det finns ",bookingFromAPI[i].date)
-              // console.log(choosenTime, bookingFromAPI[i],bookingFromAPI[i].time.length,15,chooseDate,bookingFromAPI[i].date)
-              // console.log("det finns bord att boka",bookingFromAPI.length )
-              // console.log('över eller lika med')
               SetToogleNewContainer(true)
               SetShowFreeTime(<div> 
                 <p>Det finns inget bord zzzz att boka gällande datumet: {chooseDate} och tiden: {choosenTime}. <br />
@@ -285,14 +459,14 @@ const bookingInfoHTML=(chooseDate:string,choosenTime:string,choosenGuests:number
   
   return (<div className="App-header">
     <div>
-
-    
     <h1>Admin</h1>
     <div>
       {bookingHtml}
-    <div className="updateContainer" hidden={updateBookingContainer}>
-        <h1></h1>
-      </div>  
+      {bookingHtml2}
+      {/* {newtime} */}
+        <div className="updateContainer" hidden={updateBookingContainer}>
+              {bookingUpdateInfo}
+        </div>  
     </div>
     <button onClick={()=>SetToogle(!toogle)}>Skapa bokning!</button>
     <div className="toogleContainer" hidden={toogle}>
@@ -316,14 +490,15 @@ const bookingInfoHTML=(chooseDate:string,choosenTime:string,choosenGuests:number
               <option value="4">4</option>
               <option value="5">5</option>
               <option value="6">6</option>
-      </select> <br />
-      <button onClick={()=>{chooseWeek(choosenDate,choosenTime,choosenGuests)}}> Sök!</button>
+      </select> <br /><br />
+      <input type="checkbox" onClick={()=>{SetToogleGDPR(!toogleGDPR)}}/>Informerat kunden om GDPR <br /><br />
+      <button disabled={toogleGDPR} onClick={()=>{chooseWeek(choosenDate,choosenTime,choosenGuests)}}> Sök!</button>
       </div>
       <div className="freeTime">
       {showFreeTime}
       </div>
       <div  hidden={toogleNewContainer}>
-      {newBookingContainer}
+      {/* {newBookingContainer} */}
         <form>
               <label>Förnamn: </label>
                   <input type="text" name="name"  value={newCustomer.name} onChange={handleBookingInfoFName}/> <br />
@@ -337,7 +512,6 @@ const bookingInfoHTML=(chooseDate:string,choosenTime:string,choosenGuests:number
            
 
                       <button onClick={()=>{createBooking()}}>Skicka bokning</button> 
-                      {/* pattern="[0-9]{3}-[0-9]{3} [0-9]{2} [0-9]{2}" placeholder="070-241 67 78" */}
                 </div>
       <div> 
       </div>
