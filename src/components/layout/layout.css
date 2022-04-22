@@ -46,3 +46,18 @@
 .hamburger div:hover {
     margin: 7px 11px 7px 4px;
 }
+
+.footer {
+    background-color: #3C3C3C;
+    text-align: center;
+    padding: 10px;
+}
+
+.footer p {
+    color: white;
+    margin: 0;
+}
+
+.fa-location-dot {
+    color: #E2A749;
+}

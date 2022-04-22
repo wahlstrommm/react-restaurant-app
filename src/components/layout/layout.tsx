@@ -23,6 +23,12 @@ export default function Layout() {
       <main>
         <Outlet></Outlet>
       </main>
+      <footer className="footer">
+        <p>
+          <i className="fa-solid fa-location-dot"></i> Adressvägen 2, 111 11
+          Stocholm
+        </p>
+      </footer>
     </>
   );
 }
