@@ -1,7 +1,6 @@
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import "./layout.css";
-import Navbar from "../navbar/navbar";
 
 export default function Layout() {
   const navigate = useNavigate();
@@ -9,7 +8,13 @@ export default function Layout() {
   return (
     <>
       <header className="header">
-        <h1 className="header-logo">Zias</h1>
+        <h1
+          className="header-logo"
+          onClick={() => {
+            navigate("/");
+          }}>
+          Zias
+        </h1>
         {/* <!-------- Menu Button --------> */}
         <div
           className="hamburger"
