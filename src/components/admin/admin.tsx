@@ -11,7 +11,7 @@ import { UpdateBookning } from "../../models/bookning/UpdateBookning";
 
 export default function Admin() {
   const [bookingFromAPI,SetBookingFromAPI]= useState<IBooking[]>([]);
-  // const [availableBookings,SetAvailableBookings] = useState<IBooking[]>([]);
+
   const [costumersFromAPI,SetCostumersFromAPI] = useState<ICostumerData[]>([]);
 
   const [toogle, SetToogle] = useState(true); 
@@ -395,7 +395,7 @@ const bookingInfoHTML=(chooseDate:string,choosenTime:string,choosenGuests:number
                 </div>)
             }        
             else{
-              
+
                 SetToogleNewContainer(true)
               SetShowFreeTime(<div> 
                 <p>Det finns bord att boka gällande datumet: {chooseDate} och tiden: {choosenTime}</p>
