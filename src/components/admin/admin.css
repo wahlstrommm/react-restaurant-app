@@ -1,12 +1,9 @@
 .App-header {
-    background-image: url("../../assets/mat.svg");
-    height: 100vh;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-color: #62401c;
     margin: 0;
+    padding: 20px;
+    min-height: 100vh;
 }
-
 .admin-content {
     position: relative;
     color: white;
@@ -18,10 +15,29 @@
     text-transform: uppercase;
     margin: 0;
 }
-
+.booking-info, .customer-info {
+    background-color: #3C3C3C70;
+    padding: 10px;
+    border: 1px solid #3C3C3C;
+    border-radius: 12px;
+    margin: 10px 0px;
+}
+.booking-info p, .customer-info p{
+    color: white;
+}
 .formContainer {
     background-color: #3C3C3C70;
-    position: absolute;
+    position: relative;
+    width: 80%;
+    left: 10%;
+    padding: 10px;
+    border: 1px solid #3C3C3C;
+    border-radius: 12px;
+    margin: 10px 0px;
+}
+.updateContainer {
+    background-color: #F3F3F3;
+    position: relative;
     width: 80%;
     left: 10%;
     padding: 10px;
