@@ -22,7 +22,7 @@ export default function Home() {
         </div>
       </div>
       <div className="flexbox-container">
-        <div className="booking-info">
+        <div className="contact-info">
           <h3>Boka bord</h3>
           <p>
             På webben eller via telefon <br />{" "}
@@ -115,6 +115,12 @@ export default function Home() {
         </div>
       </div>
       <img src={map} alt="map" className="map" />
+      <footer className="footer">
+        <p>
+          <i className="fa-solid fa-location-dot"></i> S:t Eriks Torg 2, 103 16
+          Stockholm
+        </p>
+      </footer>
     </div>
   );
 }

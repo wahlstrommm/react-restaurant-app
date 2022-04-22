@@ -47,7 +47,7 @@ h2, h3, h4, p {
 
 /* Booking info + opening hours
 --------------------------*/
-.booking-info{
+.contact-info{
     text-align: center;
     position: relative;
     height: 20%;
@@ -106,6 +106,27 @@ table {
 .map {
     width: 100%;
     height: auto;
+}
+
+/* Footer
+--------------------------*/
+.footer {
+    background-color: #3C3C3C;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer p {
+    color: white;
+    margin: 0;
+}
+
+.fa-location-dot {
+    color: #E2A749;
 }
 
 /* Desktop view
