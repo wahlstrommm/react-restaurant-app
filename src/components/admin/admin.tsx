@@ -1,11 +1,9 @@
-import axios from "axios";
+import axios from "axios"
 import { ChangeEvent, useEffect, useState } from "react";
 import { Booking } from "../../models/bookning/bookning";
 import { IBooking } from "../../models/bookning/IBookning";
-
 import {INewCostumer } from "../../models/Costumer/INewCostumer";
 import {NewBookning } from "../../models/bookning/NewBookning";
-
 import { CostumerData } from "../../models/Costumer/CostumerData";
 import { ICostumerData } from "../../models/Costumer/ICostumerData";
 import { UpdateBookning } from "../../models/bookning/UpdateBookning";
@@ -36,11 +34,12 @@ export default function Admin() {
 
   const baseURL:string='https://school-restaurant-api.azurewebsites.net/'
   const ourRestaurantId:string='624ff079138a40561e115f16'
+
   const [newCustomer, setNewCustomer] = useState<INewCostumer>({
-    name: "",
-    lastname: "",
-    email: "",
-    phone: "",
+    name: '',
+    lastname: '',
+    email: '',
+    phone: ''
   });
 
     const [newBooking, setNewBooking] = useState<NewBookning>({
@@ -107,7 +106,6 @@ let costumersFull:any[]=[]
       setNewBooking({...newBooking,time:time})
     };
 
-
   useEffect(() => {
     console.log("Trying to get data");
     if (bookingFromAPI.length > 0) return;
@@ -131,7 +129,6 @@ const getFromAPI = ()=>{
   .then((response) => {
         let bookingListFromAPI= response.data.map((bookings:IBooking)=>{
         return new Booking(bookings._id,bookings.date,bookings.restaurantId,bookings.time,bookings.numberOfGuests,bookings.customerId)
-
          });
          let listIDs: string [] = [];
         for (let i = 0; i < bookingListFromAPI.length; i++) {
@@ -299,11 +296,6 @@ const confirmUpdatedBookingInfo=(chooseDate:string,choosenTime:string,numberOfGu
     );
   });
 
-  let bookingHtml2 = costumersFromAPI.map(
-    (reddd: ICostumerData, id: number) => {
-      console.log("Kör mapping");
-      console.log(costumersFull);
-      console.log(costumersFromAPI);
 
   let personalBookingInfo = costumersFromAPI.map((costumer: ICostumerData,id:number) => {
     return (<div key={id}>
@@ -314,16 +306,20 @@ const confirmUpdatedBookingInfo=(chooseDate:string,choosenTime:string,numberOfGu
             Email: {costumer.email} <br />
             Telefonnummer: {costumer.phone}
           <br />
-
           </p>
-        </div>
-      );
-    }
-  );
+      </div>
+    );
+  });
+
+
 
   useEffect(() => {
     console.log("booking changed");
   }, [bookingFromAPI]);
+
+
+
+
   
   const chooseWeek=(inputDateFromUser:string,inputTimeFromUser:string,inputGuestFromUser:number)=>{
     if(inputDateFromUser===''||inputGuestFromUser===0){
@@ -349,6 +345,8 @@ const confirmUpdatedBookingInfo=(chooseDate:string,choosenTime:string,numberOfGu
     }else
     return SetShowFreeTime(<div><p>Du valde ingen tid! Välj tid och försök igen!</p></div>)
   }}
+
+
 
 useEffect(() => {
   console.log("booking changed");
@@ -408,68 +406,10 @@ const bookingInfoHTML=(chooseDate:string,choosenTime:string,choosenGuests:number
           SetShowFreeTime(<div> 
             <p>Det finns bord att boka gällande datumet: {chooseDate} och tiden: {choosenTime}</p>
             <button onClick={()=>{newBookingHTML()}}>Boka!</button>
-
                 <p>Vill du boka det?</p>
-              </div>
-            );
-          } else if (
-            choosenTime === bookingFromAPI[i].time &&
-            bookingFromAPI.length >= 15
-          ) {
-            // console.log("det finns inga bord att boka",bookingFromAPI[i].time.length>15 )
-            // console.log("det finns ",bookingFromAPI[i].date[i])
-            // console.log("det finns ",bookingFromAPI[i].date)
-            // console.log(choosenTime, bookingFromAPI[i],bookingFromAPI[i].time.length,15,chooseDate,bookingFromAPI[i].date)
-            // console.log("det finns bord att boka",bookingFromAPI.length )
-            // console.log('över eller lika med')
-            SetToogleNewContainer(true);
-            SetShowFreeTime(
-              <div>
-                <p>
-                  Det finns inget bord zzzz att boka gällande datumet:{" "}
-                  {chooseDate} och tiden: {choosenTime}. <br />
-                  Kolla ett annat datum eller avvakta för eventuella
-                  avbokningar...
-                </p>
-              </div>
-            );
-          } else {
-            SetToogleNewContainer(true);
-            SetShowFreeTime(
-              <div>
-                <p>
-                  Det finns ett bord dddddddd att boka gällande datumet:{" "}
-                  {chooseDate} och tiden: {choosenTime}
-                </p>
-                <button
-                  onClick={() => {
-                    newBookingHTML();
-                  }}>
-                  Boka!
-                </button>
-              </div>
-            );
-          }
+            </div>)
         }
-      } else {
-        SetShowFreeTime(
-          <div>
-            <p>
-              Det finns ett bord eeeeeeeeeee att boka gällande datumet:{" "}
-              {chooseDate} och tiden: {choosenTime}
-            </p>
-            <button
-              onClick={() => {
-                newBookingHTML();
-              }}>
-              Boka!
-            </button>
-            <p>Vill du boka det?</p>
-          </div>
-        );
-      }
     }
-
     return(((<div>{chooseDate} {choosenTime}
     {showFreeTime}
     </div>))
