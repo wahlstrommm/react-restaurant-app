@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../styled components/Button";
-import Bookning from "../bookning/bookning";
 import "./home.css";
 import map from "../../assets/karta.svg";
 

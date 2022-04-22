@@ -14,6 +14,9 @@
     font-size: 3em;
     margin: 0;
 }
+.header-logo:hover {
+    cursor: pointer;
+}
 
 /* Hamburger Menu button
 --------------------------*/
