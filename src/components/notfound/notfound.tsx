@@ -1,7 +1,7 @@
-import React from 'react'
-
 export default function Notfound() {
   return (
-    <div>notfound</div>
-  )
+    <div>
+      <h2>Ooops den här sidan existerar inte. Försök igen!</h2>
+    </div>
+  );
 }

@@ -1,6 +1,6 @@
 .navbar {
     position: relative;
-    height: 100%;
+    min-height: 90vh;
     width: 100%;
     top: 50px;
     text-align: center;
@@ -9,10 +9,24 @@
 .navbar ul {
     padding: 0;
 }
+.span-line {
+    position: relative;
+    display: block;
+    border-top: 4px solid #E2A749;
+    width: 30%;
+    left: 35%;
+    margin: 20px 0px;
+}
 
+/* Desktop view
+--------------------------*/
 @media screen and (min-width: 481px) {
 
     .navbar {
         top: 30px;
     }    
+    .navbar .span-line {
+        width: 10%;
+        left: 45%;
+    }
 }
