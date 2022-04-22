@@ -48,6 +48,12 @@ select {
     padding: 2px;
 }
 
+.freeTime div p {
+    color: white;
+}
+
+/* Desktop view
+--------------------------*/
 @media screen and (min-width: 481px) {
    
     .admin-content {
