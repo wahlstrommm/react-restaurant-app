@@ -1,4 +1,4 @@
-export class Booking{
+export class Booking {
     constructor( 
         public  _id:string,
         public  date:string,
