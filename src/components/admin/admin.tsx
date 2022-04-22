@@ -106,6 +106,7 @@ let costumersFull:any[]=[]
       setNewBooking({...newBooking,time:time})
     };
 
+
   useEffect(() => {
     console.log("Trying to get data");
     if (bookingFromAPI.length > 0) return;
@@ -314,10 +315,10 @@ const confirmUpdatedBookingInfo=(chooseDate:string,choosenTime:string,numberOfGu
           <br />
 
           </p>
-      </div>
-    );
-  });
-
+        </div>
+      );
+    }
+  );
 
   useEffect(() => {
     console.log("booking changed");
@@ -347,8 +348,6 @@ const confirmUpdatedBookingInfo=(chooseDate:string,choosenTime:string,numberOfGu
     }else
     return SetShowFreeTime(<div><p>Du valde ingen tid! Välj tid och försök igen!</p></div>)
   }}
-
-
 
 useEffect(() => {
   console.log("booking changed");

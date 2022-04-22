@@ -1,3 +1,5 @@
+/* Header
+--------------------------*/
 .header {
     background-color: #251c0e;
     position: relative;
@@ -42,7 +44,30 @@
     margin: 7px 0px 7px 4px;
     transition: all .2s ease-in-out;
 }
-
-.hamburger div:hover {
+.hamburger:hover div {
     margin: 7px 11px 7px 4px;
+}
+.hamburger:hover {
+    cursor: pointer;
+}
+
+/* Footer
+--------------------------*/
+.footer {
+    background-color: #3C3C3C;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer p {
+    color: white;
+    margin: 0;
+}
+
+.fa-location-dot {
+    color: #E2A749;
 }

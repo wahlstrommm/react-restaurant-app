@@ -1,0 +1,28 @@
+.menu-div {
+    background-image: url("../../assets/glas.svg");
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0;
+}
+.menu-img {
+    position: absolute;
+    max-width: 90%;
+    height: auto;
+    left: 5%;
+    margin: 75px 0 0 0;
+}
+
+/* Desktop view
+--------------------------*/
+@media screen and (min-width: 481px) {
+   
+    .menu-div {
+        height: 150vh;
+    }
+    .menu-img {
+        max-width: 50%;
+        left: 25%;
+    }
+}

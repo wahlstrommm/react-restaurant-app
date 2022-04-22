@@ -7,4 +7,9 @@ export const Li = styled.li`
   font-size: xx-large;
   list-style: none;
   padding: 8px;
+
+  &:hover {
+    color: #e2a749;
+    cursor: pointer;
+  }
 `;
