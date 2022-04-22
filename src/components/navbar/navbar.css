@@ -9,6 +9,14 @@
 .navbar ul {
     padding: 0;
 }
+.span-line {
+    position: relative;
+    display: block;
+    border-top: 4px solid #E2A749;
+    width: 30%;
+    left: 35%;
+    margin: 20px 0px;
+}
 
 @media screen and (min-width: 481px) {
 

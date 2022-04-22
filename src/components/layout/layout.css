@@ -43,7 +43,7 @@
     transition: all .2s ease-in-out;
 }
 
-.hamburger div:hover {
+.hamburger:hover div {
     margin: 7px 11px 7px 4px;
 }
 
@@ -51,6 +51,8 @@
     background-color: #3C3C3C;
     text-align: center;
     padding: 10px;
+    position: relative;
+    bottom: 0;
 }
 
 .footer p {
