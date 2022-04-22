@@ -34,21 +34,65 @@ export default function Admin() {
     phone: "",
   });
 
-  const [newBooking, setNewBooking] = useState<NewBookning>({
-    restaurantId: "624ffb0755e34cb62ef983ec",
-    date: "",
-    time: "",
-    numberOfGuests: 0,
-    customer: {
-      name: "",
-      lastname: "",
-      email: "",
-      phone: "",
-    },
-  });
+    const [newBooking, setNewBooking] = useState<NewBookning>({
+      restaurantId: '624ffb0755e34cb62ef983ec',
+      date: '',
+      time: '',
+      numberOfGuests: 0,
+      customer: {
+        name: '',
+        lastname: '',
+        email: '',
+        phone: ''
+      }
+    });
 
-  let costumerIDs: string[] = [];
-  let costumersFull: any[] = [];
+
+    let costumerIDs:string[]=[]
+let costumersFull:any[]=[]
+
+    const handleBookingInfoFName=(e:ChangeEvent<HTMLInputElement>)=>{
+      console.log('hej from fname',e)
+      let name = e.target.value
+      setNewCustomer({...newCustomer,name:name})
+    }
+
+    const handleBookingInfoLName=(e:ChangeEvent<HTMLInputElement>)=>{
+      console.log('hej from lname',e)
+      let lastname = e.target.value
+      setNewCustomer({...newCustomer,lastname:lastname})
+    }   
+
+    const handleBookingInfoEmail=(e:ChangeEvent<HTMLInputElement>)=>{
+      console.log('hej from email',e)
+      let email = e.target.value
+      setNewCustomer({...newCustomer,email:email})
+    }
+
+    const handleBookingInfoPhone=(e:ChangeEvent<HTMLInputElement>)=>{
+      let phone = e.target.value;
+      console.log('hej from phone',e)
+      setNewCustomer({...newCustomer,phone:phone})
+    }
+
+    const handleBookingInfoGuest=(e:number)=>{
+      let guests = e;
+      SetChoosenGuest(guests)
+      setNewBooking({...newBooking,numberOfGuests:guests})
+    }
+  
+    
+    const handleBookingDate = (e: string) => {
+      let name: string = e;
+      SetChoosenDate(name)
+      setNewBooking({...newBooking,date:name})
+    };
+    
+    const handleBookingTime = (e: string) => {
+      let time: string = e;
+      SetChoosenTime(time)
+      setNewBooking({...newBooking,time:time})
+    };
 
   const handleBookingInfoFName = (e: ChangeEvent<HTMLInputElement>) => {
     console.log("hej from fname", e);
@@ -95,54 +139,42 @@ export default function Admin() {
   useEffect(() => {
     console.log("Trying to get data");
     if (bookingFromAPI.length > 0) return;
-    if ((bookingFromAPI.length = 0)) return;
-    getFromAPI();
   });
   // useEffect(() => {
   //   console.log("Trying to get costumer DATA");
   //   if (costumersFromAPI.length > 0) return;
   //   // getCostumersFromAPI()
-
+      
   // });
 
-  const newBookingHTML = () => {
-    SetShowFreeTime(<></>);
-    SetToogleNewContainer(!toogleNewContainer);
-  };
+  const newBookingHTML = ()=>{
+    SetShowFreeTime(<></>)
+   SetToogleNewContainer(!toogleNewContainer)
+  }
 
-  const updateAvailableBookingsPerDateTime = (date: string, time: string) => {
-    SetAvailableBookings(
-      bookingFromAPI.filter((booking) => {
-        if (booking.time === time && booking.date === date) {
-          return true;
-        } else {
-          return false;
-        }
-      })
-    );
-  };
+  const updateAvailableBookingsPerDateTime =(date:string,time:string)=>{
+   SetAvailableBookings(bookingFromAPI.filter((booking)=>{
+      if(booking.time===time && booking.date===date){
+       return true
+      }else{
+       return false
+      }
+    }))
+  }
 
-  const getFromAPI = () => {
-    axios
-      .get<IBooking[]>(
-        "https://school-restaurant-api.azurewebsites.net/booking/restaurant/624ffb0755e34cb62ef983ec"
-      )
-      .then((response) => {
-        let bookingListFromAPI = response.data.map((bookings: IBooking) => {
-          return new Booking(
-            bookings._id,
-            bookings.date,
-            bookings.restaurantId,
-            bookings.time,
-            bookings.numberOfGuests,
-            bookings.customerId
-          );
-        });
+const getFromAPI = ()=>{
+  
+  axios.get<IBooking[]>('https://school-restaurant-api.azurewebsites.net/booking/restaurant/624ffb0755e34cb62ef983ec')
+  .then((response) => {
+      let bookingListFromAPI= response.data.map((bookings:IBooking)=>{
+        return new Booking(bookings._id,bookings.date,bookings.restaurantId,bookings.time,bookings.numberOfGuests,bookings.customerId)
+      });
 
-        let listIDs: string[] = [];
-        for (let i = 0; i < bookingListFromAPI.length; i++) {
-          listIDs.push(bookingListFromAPI[i].customerId);
-        }
+      let listIDs: string [] = [];
+      for (let i = 0; i < bookingListFromAPI.length; i++) {
+        listIDs.push(bookingListFromAPI[i].customerId);
+      }
+
 
         SetBookingFromAPI(bookingListFromAPI);
         console.log("hej");
@@ -410,66 +442,57 @@ export default function Admin() {
             {/* <button onClick={()=>{deletedBooking(bookings._id,id)}}>Radera</button> */}
             {/* <button onClick={()=>{updateBooking(bookings._id,bookings.date,bookings.time,bookings.numberOfGuests,bookings.customerId,bookings.restaurantId)}}>Flytta</button>  */}
           </p>
-        </div>
-      );
-    }
-  );
+      </div>
+    );
+  });
+
 
   useEffect(() => {
     console.log("booking changed");
   }, [bookingFromAPI]);
 
-  const deletedBooking = (deletedBookingID: string, index: number) => {
-    let booking = bookingFromAPI;
-    SetBookingFromAPI(booking.splice(index, 0));
-    axios
-      .delete(
-        "https://school-restaurant-api.azurewebsites.net/booking/delete/" +
-          deletedBookingID
-      )
-      .then((response) => console.log(response))
-      .then(getFromAPI)
-      .catch((error) => {
-        console.log("Det blev något fel!" + " Statuskod" + error);
-      });
-    console.log(bookingFromAPI);
-  };
 
-  const createBooking = () => {
-    let costumer = { ...newBooking.customer };
-    costumer.name = newCustomer.name;
-    costumer.lastname = newCustomer.lastname;
-    costumer.email = newCustomer.email;
-    costumer.phone = newCustomer.phone;
-    newBooking.customer = costumer;
+      const deletedBooking=(deletedBookingID:string,index:number)=>{
+       let booking = bookingFromAPI
+       SetBookingFromAPI(booking.splice(index,0)) 
+       axios.delete('https://school-restaurant-api.azurewebsites.net/booking/delete/'+deletedBookingID)
+       .then(response=>( console.log(response)))
+       .then(getFromAPI)
+       .catch(error=>{
+         console.log("Det blev något fel!" + " Statuskod" + error)
+        })
+        console.log(bookingFromAPI)
+      }
 
-    axios
-      .post("https://school-restaurant-api.azurewebsites.net/booking/create", {
-        restaurantId: "624ffb0755e34cb62ef983ec",
-        date: newBooking.date,
-        time: newBooking.time,
-        numberOfGuests: newBooking.numberOfGuests,
-        customer: {
-          name: newCustomer.name,
-          lastname: newCustomer.lastname,
-          email: newCustomer.email,
-          phone: newCustomer.phone,
-        },
-      })
-      .then((response) => {
-        getFromAPI();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
-  const chooseWeek = (
-    inputDateFromUser: string,
-    inputTimeFromUser: string,
-    inputGuestFromUser: number
-  ) => {
-    if (inputTimeFromUser === "18:00" || inputTimeFromUser === "21:00") {
+
+  const createBooking=()=> {
+    
+    let costumer={...newBooking.customer}
+    costumer.name=newCustomer.name
+    costumer.lastname=newCustomer.lastname
+    costumer.email=newCustomer.email
+    costumer.phone=newCustomer.phone
+    newBooking.customer=costumer
+
+    axios.post('https://school-restaurant-api.azurewebsites.net/booking/create', {
+      "restaurantId": '624ffb0755e34cb62ef983ec',
+      "date": newBooking.date,
+      "time": newBooking.time,
+      "numberOfGuests": newBooking.numberOfGuests,
+      "customer": {
+        "name": newCustomer.name,
+        "lastname": newCustomer.lastname,
+        "email": newCustomer.email,
+        "phone": newCustomer.phone
+      }
+    }).then(response => {getFromAPI()})
+    .catch(error => {console.log(error)})
+  }
+
+  
+  const chooseWeek=(inputDateFromUser:string,inputTimeFromUser:string,inputGuestFromUser:number)=>{
+    if(inputTimeFromUser==='18:00'||inputTimeFromUser==='21:00' ){
       let today = new Date(inputDateFromUser);
       let listOfDate: string[] = [];
       let listOfTime: string[] = ["18:00", "21:00"];
@@ -538,6 +561,12 @@ export default function Admin() {
             choosenTime === bookingFromAPI[i].time &&
             bookingFromAPI.length >= 15
           ) {
+            // console.log("det finns inga bord att boka",bookingFromAPI[i].time.length>15 )
+            // console.log("det finns ",bookingFromAPI[i].date[i])
+            // console.log("det finns ",bookingFromAPI[i].date)
+            // console.log(choosenTime, bookingFromAPI[i],bookingFromAPI[i].time.length,15,chooseDate,bookingFromAPI[i].date)
+            // console.log("det finns bord att boka",bookingFromAPI.length )
+            // console.log('över eller lika med')
             SetToogleNewContainer(true);
             SetShowFreeTime(
               <div>
@@ -585,10 +614,54 @@ export default function Admin() {
         );
       }
     }
-    return (
-      <div>
-        {chooseDate} {choosenTime}
-        {showFreeTime}
+
+    return(((<div>{chooseDate} {choosenTime}
+    {showFreeTime}
+    </div>))
+    
+    )
+  }
+
+  
+  return (<div className="App-header">
+    <div>
+    <h1>Admin</h1>
+    <div>
+      {bookingHtml}
+      {bookingHtml2}
+      {/* {newtime} */}
+        <div className="updateContainer" hidden={updateBookingContainer}>
+              {bookingUpdateInfo}
+        </div>  
+    </div>
+    <button onClick={()=>SetToogle(!toogle)}>Skapa bokning!</button>
+    <div className="toogleContainer" hidden={toogle}>
+    <div className="formContainer">
+      <div className="formsCreatedBooking">
+      <form>
+        <label>Skriv önskat datum:</label>
+        <input type="date" min="2022-04-01" value={choosenDate} required onChange={(e)=>{handleBookingDate(e.target.value)}}/>
+      </form>
+      <label>Tid: </label>
+      <select name="time-select" id="timeSelect" required value={choosenTime}  onChange={(e)=>{handleBookingTime(e.target.value)}}>
+        <option value="DEFAULT">Välj en tid ...</option>
+        <option value="18:00" >18:00</option>
+        <option value="21:00">21:00</option>
+      </select> <br />
+      <label htmlFor="amountGuest">Antal gäster:</label>
+      <select name="guestAmount" id="guestForm" required value={choosenGuests} onChange={(e)=>{handleBookingInfoGuest(parseInt(e.target.value))}}>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+      </select> <br /><br />
+      <input type="checkbox" onClick={()=>{SetToogleGDPR(!toogleGDPR)}}/>Informerat kunden om GDPR <br /><br />
+      <button disabled={toogleGDPR} onClick={()=>{chooseWeek(choosenDate,choosenTime,choosenGuests)}}> Sök!</button>
+      </div>
+      <div className="freeTime">
+      {showFreeTime}
       </div>
     );
   };
