@@ -1,4 +1,4 @@
-import { Booking } from "./Bookning";
+import { Booking } from "./bookning";
 
 export class Bookings{
     Booknings:Booking[]=[]
