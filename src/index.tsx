@@ -7,7 +7,7 @@ import Admin from "./components/admin/admin";
 import Home from "./components/home/home";
 import Menu from "./components/menu/menu";
 import Bookning from "./components/bookning/bookning";
-import Notfound from "./components/notfound/Notfound";
+import Notfound from "./components/notfound/notfound";
 import Layout from "./components/layout/layout";
 import Navbar from "./components/navbar/navbar";
 
