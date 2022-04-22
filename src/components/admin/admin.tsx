@@ -4,7 +4,6 @@ import { Booking } from "../../models/bookning/bookning";
 import { IBooking } from "../../models/bookning/IBookning";
 import {INewCostumer } from "../../models/Costumer/INewCostumer";
 import {NewBookning } from "../../models/bookning/NewBookning";
-import { Costumer } from "../../models/Costumer/Costumer";
 import { CostumerData } from "../../models/Costumer/CostumerData";
 import { ICostumerData } from "../../models/Costumer/ICostumerData";
 import { UpdateBookning } from "../../models/bookning/UpdateBookning";
